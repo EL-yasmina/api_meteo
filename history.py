@@ -1,4 +1,20 @@
 import requests
+import json
+
+def sauvegarder_donneesHisto_json(donnees, nom_fichier):
+    """
+    Sauvegarde les données dans un fichier JSON.
+
+    Args:
+        donnees (dict): Les données à sauvegarder.
+        nom_fichier (str): Le nom du fichier JSON de sortie.
+    """
+    with open(nom_fichier, "w") as json_file:
+        json.dump(donnees, json_file, indent=4)
+
+
+
+
 
 def get_historical_weather_data(city, api_key, date):
     url = f"http://api.weatherapi.com/v1/history.json?key={api_key}&q={city}&dt={date}"
@@ -13,6 +29,8 @@ def get_historical_weather_data(city, api_key, date):
         temperature = data["forecast"]["forecastday"][0]["day"]["avgtemp_c"]
         conditions = data["forecast"]["forecastday"][0]["day"]["condition"]["text"]
 
+        sauvegarder_donneesHisto_json(data, "history.json")
+
         return temperature, conditions
     else:
 
@@ -22,7 +40,7 @@ def get_historical_weather_data(city, api_key, date):
 
 api_key = "61064c6295144de9b63101812242904"
 city = "casablanca"
-date = "2024-04-20"  
+date = "2024-04-05"  
 
 temperature, conditions = get_historical_weather_data(city, api_key, date)
 
